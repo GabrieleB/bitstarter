@@ -1,14 +1,12 @@
 var express = require('express');
-
 var app = express.createServer(express.logger());
 
-app.get('/', function(request, response) {
-  //response.send('Hello World 2!');
-  response.sendfile(__dirname + "/index.html");
+/* Keep the cache for one day */
+var oneDay = 86400000;
 
-});
+app.use(express.compress());
 
-var port = process.env.PORT || 5000;
-app.listen(port, function() {
-  console.log("Listening on " + port);
-});
+app.use(express.static(__dirname + '/static', {maxAge: oneDay}));
+
+app.listen(process.env.PORT || 3000);
+
